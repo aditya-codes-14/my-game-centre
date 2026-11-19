@@ -1477,3 +1477,989 @@ body {
         max-width: 260px;
     }
 }
+
+/* ========================================================
+   AUTHENTICATION UI (MODAL, FORMS, AVATAR PICKER & ACCOUNT PILL)
+   Phase 2 – Step 7.1 Foundation
+======================================================== */
+
+/* --- Auth Modal Container & Views --- */
+.modal-card.modal-auth {
+    max-width: 500px;
+    padding: 2rem 1.8rem;
+    gap: 1.25rem;
+}
+
+.auth-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    padding-bottom: 0.75rem;
+}
+
+.auth-modal-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.auth-modal-title {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+}
+
+.auth-modal-subtitle {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-weight: 500;
+}
+
+.auth-modal-close-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.auth-modal-close-btn:hover {
+    color: var(--neon-pink);
+    border-color: var(--neon-pink);
+    box-shadow: var(--glow-pink);
+}
+
+/* --- Auth Tab Navigation --- */
+.auth-tabs-nav {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.25rem;
+}
+
+.auth-tab-btn {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.auth-tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.auth-tab-btn.active {
+    color: var(--neon-cyan);
+    border-bottom-color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+/* --- View Switching --- */
+.auth-views-viewport {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.auth-view-screen {
+    display: none;
+    flex-direction: column;
+    gap: 1.1rem;
+    width: 100%;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.auth-view-screen.active {
+    display: flex;
+}
+
+/* --- Form Fields & Labels --- */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.auth-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+}
+
+.auth-field-label {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.auth-field-label .required-mark {
+    color: var(--neon-pink);
+    margin-left: 0.25rem;
+}
+
+.auth-field-hint {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+}
+
+/* --- Inputs & Buttons --- */
+.auth-input {
+    background: rgba(7, 10, 19, 0.9);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    padding: 0.65rem 0.95rem;
+    border-radius: 8px;
+    outline: none;
+    transition: var(--transition-fast);
+    width: 100%;
+}
+
+.auth-input::placeholder {
+    color: rgba(148, 163, 184, 0.5);
+    font-weight: 500;
+}
+
+.auth-input:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: var(--glow-cyan);
+}
+
+.auth-input.is-invalid {
+    border-color: var(--neon-pink);
+    box-shadow: var(--glow-pink);
+}
+
+.auth-submit-btn {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #ffffff;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    width: 100%;
+    transition: var(--transition-norm);
+    box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #00e5ff, #0088ff);
+    box-shadow: var(--glow-cyan-strong);
+    transform: translateY(-2px);
+}
+
+.auth-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.auth-submit-btn .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: authSpin 0.8s linear infinite;
+}
+
+@keyframes authSpin {
+    to { transform: rotate(360deg); }
+}
+
+.auth-secondary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-family: var(--font-body);
+    color: var(--text-secondary);
+}
+
+.auth-link {
+    background: transparent;
+    border: none;
+    color: var(--neon-cyan);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition-fast);
+    padding: 0;
+}
+
+.auth-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+    text-decoration: underline;
+}
+
+.auth-switch-prompt {
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* --- Banner Alerts (Error & Success) --- */
+.auth-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+.auth-banner.auth-error {
+    background: rgba(255, 0, 127, 0.12);
+    border: 1px solid var(--neon-pink);
+    color: #ff80bf;
+}
+
+.auth-banner.auth-success {
+    background: rgba(0, 255, 157, 0.12);
+    border: 1px solid var(--neon-green);
+    color: #80ffcf;
+}
+
+.auth-banner .banner-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+/* --- Avatar Preset Picker Grid --- */
+.avatar-picker-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.avatar-picker-label {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.avatar-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.65rem;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0.6rem;
+    background: rgba(7, 10, 19, 0.7);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 10px;
+}
+
+.avatar-picker-grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.avatar-picker-grid::-webkit-scrollbar-track {
+    background: rgba(14, 19, 34, 0.6);
+    border-radius: 3px;
+}
+
+.avatar-picker-grid::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.3);
+    border-radius: 3px;
+}
+
+.avatar-preset-btn {
+    background: rgba(22, 31, 54, 0.8);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    padding: 4px;
+    aspect-ratio: 1;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    outline: none;
+}
+
+.avatar-preset-btn:hover {
+    border-color: var(--neon-cyan);
+    transform: scale(1.08);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.45);
+}
+
+.avatar-preset-btn.selected,
+.avatar-preset-btn[aria-checked="true"] {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 16px var(--neon-cyan), 0 0 25px rgba(0, 240, 255, 0.6);
+    transform: scale(1.1);
+    background: rgba(0, 240, 255, 0.15);
+}
+
+.avatar-preset-btn img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+/* --- Navbar User Account Pill --- */
+.user-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(14, 19, 34, 0.9);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    color: var(--text-primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.user-pill-btn:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: var(--glow-cyan);
+    transform: translateY(-1px);
+}
+
+.nav-user-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--neon-cyan);
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+}
+
+.nav-user-name {
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-pill-arrow {
+    font-size: 0.65rem;
+    color: var(--neon-cyan);
+    transition: transform var(--transition-fast);
+}
+
+.user-pill-btn[aria-expanded="true"] .user-pill-arrow {
+    transform: rotate(180deg);
+}
+
+/* --- Account Dropdown Menu --- */
+.nav-actions {
+    position: relative;
+}
+
+.account-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 270px;
+    background: #0f1526;
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    border-radius: 12px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.85), 0 0 20px rgba(0, 240, 255, 0.25);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    z-index: 950;
+    animation: fadeIn 0.15s ease-out;
+}
+
+.account-dropdown-menu.hidden {
+    display: none !important;
+}
+
+.account-profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+}
+
+.account-dropdown-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--neon-cyan);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    object-fit: cover;
+}
+
+.account-display-name {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    max-width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-username-tag {
+    font-size: 0.88rem;
+    color: var(--neon-cyan);
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+.account-email-text {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    word-break: break-all;
+}
+
+.account-divider {
+    height: 1px;
+    background: rgba(0, 240, 255, 0.15);
+    width: 100%;
+    margin: 0.2rem 0;
+}
+
+.account-logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.55rem;
+    background: rgba(255, 0, 127, 0.15);
+    border: 1px solid var(--neon-pink);
+    color: #ffffff;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.account-logout-btn:hover {
+    background: rgba(255, 0, 127, 0.3);
+    box-shadow: var(--glow-pink);
+    transform: translateY(-1px);
+}
+
+/* --- Focus Rings & Accessible Contrast --- */
+.auth-input:focus-visible,
+.auth-submit-btn:focus-visible,
+.auth-tab-btn:focus-visible,
+.avatar-preset-btn:focus-visible,
+.user-pill-btn:focus-visible,
+.account-logout-btn:focus-visible,
+.auth-modal-close-btn:focus-visible,
+.auth-link:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
+}
+
+/* --- Responsive Layout Breakpoints --- */
+@media (max-width: 768px) {
+    .modal-card.modal-auth {
+        max-width: 460px;
+        padding: 1.8rem 1.4rem;
+    }
+
+    .avatar-picker-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.55rem;
+        max-height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-card.modal-auth {
+        width: 95vw;
+        padding: 1.4rem 1.1rem;
+        gap: 1rem;
+    }
+
+    .auth-modal-title {
+        font-size: 1.2rem;
+    }
+
+    .avatar-picker-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.5rem;
+        max-height: 160px;
+    }
+
+    .avatar-preset-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .account-dropdown-menu {
+        width: calc(100vw - 2rem);
+        right: -0.5rem;
+    }
+
+    .nav-user-name {
+        max-width: 80px;
+    }
+}
+
+@media (max-width: 380px) {
+    .nav-user-name {
+        display: none;
+    }
+
+    .user-pill-btn {
+        padding: 0.3rem 0.5rem;
+    }
+}
+
+/* ========================================================
+   PROFILE MANAGEMENT & ACCOUNT SETTINGS UI
+   Step 2 — Profile Modal, Tabs, Identity Hero, Settings & Dropdown
+======================================================== */
+
+/* --- Account Dropdown Actions --- */
+.account-dropdown-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%;
+}
+
+.account-menu-item-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.8rem;
+    background: rgba(18, 24, 43, 0.6);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-align: left;
+    outline: none;
+}
+
+.account-menu-item-btn:hover {
+    background: rgba(0, 240, 255, 0.12);
+    border-color: var(--neon-cyan);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    transform: translateX(3px);
+}
+
+.account-menu-item-btn:active {
+    transform: scale(0.98);
+}
+
+.account-menu-item-btn .menu-item-icon {
+    font-size: 1rem;
+    width: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neon-cyan);
+}
+
+/* --- Profile Modal Container --- */
+.modal-card.modal-profile {
+    max-width: 520px;
+    width: 92vw;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 1.8rem 1.7rem;
+    gap: 1.15rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 240, 255, 0.3) rgba(14, 19, 34, 0.6);
+}
+
+.modal-card.modal-profile::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-card.modal-profile::-webkit-scrollbar-track {
+    background: rgba(14, 19, 34, 0.6);
+    border-radius: 3px;
+}
+
+.modal-card.modal-profile::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.35);
+    border-radius: 3px;
+}
+
+/* --- Identity Preview Area (Hero Card) --- */
+.profile-identity-preview {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: rgba(14, 19, 34, 0.7);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
+}
+
+.profile-avatar-preview-wrapper {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+}
+
+.profile-avatar-preview-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.45);
+    background: #0f1526;
+    object-fit: cover;
+    display: block;
+}
+
+.profile-avatar-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: var(--neon-cyan);
+    color: #070a13;
+    font-family: var(--font-heading);
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    padding: 1px 6px;
+    border-radius: 10px;
+    border: 1px solid #070a13;
+    box-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+}
+
+.profile-identity-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    overflow: hidden;
+}
+
+.profile-preview-username {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.03em;
+    word-break: break-all;
+}
+
+.profile-preview-rank {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--neon-cyan);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.profile-preview-rank::before {
+    content: "⚡";
+    font-size: 0.8rem;
+}
+
+/* --- Label Row & Bio Textarea with Character Counter --- */
+.auth-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.field-char-counter {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color var(--transition-fast);
+}
+
+.field-char-counter.near-limit {
+    color: var(--neon-gold);
+}
+
+.field-char-counter.at-limit {
+    color: var(--neon-pink);
+    font-weight: 700;
+}
+
+.profile-bio-textarea {
+    resize: vertical;
+    min-height: 72px;
+    max-height: 140px;
+    line-height: 1.45;
+    font-family: var(--font-body);
+    font-size: 0.98rem;
+}
+
+/* --- Account Settings Layout & Cards --- */
+.account-settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+}
+
+.settings-card {
+    background: rgba(14, 19, 34, 0.65);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    border-radius: 10px;
+    padding: 0.9rem 1.05rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    transition: border-color var(--transition-fast);
+}
+
+.settings-card:hover {
+    border-color: rgba(0, 240, 255, 0.3);
+}
+
+.settings-card.settings-card-security {
+    border-color: rgba(255, 0, 127, 0.25);
+    background: rgba(255, 0, 127, 0.04);
+}
+
+.settings-card.settings-card-security:hover {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 12px rgba(255, 0, 127, 0.2);
+}
+
+.settings-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.settings-icon {
+    font-size: 1.15rem;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+}
+
+.settings-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.settings-title {
+    font-family: var(--font-heading);
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.03em;
+}
+
+.settings-desc {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.settings-readonly-field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(7, 10, 19, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.55rem 0.85rem;
+    gap: 0.5rem;
+}
+
+.settings-readonly-value {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    word-break: break-all;
+}
+
+.settings-badge-locked {
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--neon-cyan);
+    background: rgba(0, 240, 255, 0.12);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    padding: 2px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.settings-badge-status {
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--neon-green);
+    background: rgba(0, 255, 157, 0.12);
+    border: 1px solid rgba(0, 255, 157, 0.35);
+    padding: 2px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.settings-badge-theme {
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 700;
+    color: var(--neon-purple);
+    background: rgba(168, 85, 247, 0.12);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    padding: 2px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.settings-action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    padding-top: 0.2rem;
+}
+
+.settings-status-indicator {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--neon-cyan);
+}
+
+/* Small Button Utility for In-Card Actions */
+.btn-sm {
+    padding: 0.4rem 0.85rem !important;
+    font-size: 0.88rem !important;
+    border-radius: 6px !important;
+    font-family: var(--font-heading) !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.03em !important;
+}
+
+/* --- Focus Rings Extension for Profile Controls --- */
+.account-menu-item-btn:focus-visible,
+#profile-modal-close-btn:focus-visible,
+#profile-save-btn:focus-visible,
+#profile-tab-btn:focus-visible,
+#settings-tab-btn:focus-visible,
+#settings-sound-toggle-btn:focus-visible,
+#settings-change-password-btn:focus-visible,
+.profile-bio-textarea:focus-visible {
+    outline: 2px solid var(--neon-cyan);
+    outline-offset: 2px;
+}
+
+/* --- Responsive Layout Breakpoints for Profile --- */
+@media (max-width: 768px) {
+    .modal-card.modal-profile {
+        max-width: 480px;
+        padding: 1.6rem 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-card.modal-profile {
+        width: 95vw;
+        padding: 1.3rem 1rem;
+        gap: 0.9rem;
+    }
+
+    .profile-identity-preview {
+        gap: 0.85rem;
+        padding: 0.85rem 1rem;
+    }
+
+    .profile-avatar-preview-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-preview-username {
+        font-size: 1.05rem;
+    }
+
+    .settings-action-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .settings-action-row .btn-sm {
+        width: 100%;
+        justify-content: center;
+    }
+}
