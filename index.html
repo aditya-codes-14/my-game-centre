@@ -38,6 +38,39 @@
                     <span class="icon">📊</span>
                     <span class="btn-text">Stats</span>
                 </button>
+                <button id="nav-auth-btn" class="action-btn" type="button" aria-label="Sign In or Register">
+                    <span class="icon">👤</span>
+                    <span class="btn-text">Sign In</span>
+                </button>
+                <button id="nav-user-btn" class="user-pill-btn hidden" type="button" aria-label="Open User Account Menu" aria-haspopup="true" aria-expanded="false">
+                    <img id="nav-user-avatar" class="nav-user-avatar" src="" alt="User Avatar">
+                    <span id="nav-user-name" class="nav-user-name">Player</span>
+                    <span class="user-pill-arrow" aria-hidden="true">▼</span>
+                </button>
+                <div id="account-dropdown" class="account-dropdown-menu hidden" role="menu" aria-label="User Account Menu">
+                    <div class="account-profile-card">
+                        <img id="dropdown-user-avatar" class="account-dropdown-avatar" src="" alt="Profile Avatar">
+                        <span id="dropdown-display-name" class="account-display-name">Player</span>
+                        <span id="dropdown-username" class="account-username-tag">@player</span>
+                        <span id="dropdown-email" class="account-email-text">player@example.com</span>
+                    </div>
+                    <div class="account-divider" role="separator" aria-hidden="true"></div>
+                    <div class="account-dropdown-actions" role="group" aria-label="Account Actions">
+                        <button id="dropdown-profile-btn" class="account-menu-item-btn" type="button" role="menuitem">
+                            <span class="menu-item-icon" aria-hidden="true">👤</span>
+                            <span>My Profile</span>
+                        </button>
+                        <button id="dropdown-settings-btn" class="account-menu-item-btn" type="button" role="menuitem">
+                            <span class="menu-item-icon" aria-hidden="true">⚙️</span>
+                            <span>Account Settings</span>
+                        </button>
+                    </div>
+                    <div class="account-divider" role="separator" aria-hidden="true"></div>
+                    <button id="account-logout-btn" class="account-logout-btn" type="button" role="menuitem">
+                        <span class="logout-icon" aria-hidden="true">🚪</span>
+                        <span>Sign Out</span>
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -532,12 +565,314 @@
             </div>
         </div>
 
+        <!-- REUSABLE MODAL: AUTHENTICATION -->
+        <div id="modal-auth" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+            <div class="modal-card modal-auth">
+                <div class="auth-modal-header">
+                    <div class="auth-modal-header-content">
+                        <h3 id="auth-modal-title" class="auth-modal-title">PILOT ACCESS</h3>
+                        <p id="auth-modal-subtitle" class="auth-modal-subtitle">Sign in to sync your high scores &amp; profile</p>
+                    </div>
+                    <button id="auth-modal-close-btn" class="auth-modal-close-btn" type="button" aria-label="Close Authentication Dialog">&times;</button>
+                </div>
+
+                <div id="auth-tabs-nav" class="auth-tabs-nav" role="tablist" aria-label="Authentication Options">
+                    <button id="auth-tab-login" class="auth-tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="auth-view-login">Sign In</button>
+                    <button id="auth-tab-register" class="auth-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="auth-view-register">Register</button>
+                </div>
+
+                <div id="auth-error-banner" class="auth-banner auth-error hidden" role="alert" aria-live="assertive">
+                    <span class="banner-icon" aria-hidden="true">⚠️</span>
+                    <span id="auth-error-text" class="banner-text"></span>
+                </div>
+
+                <div id="auth-success-banner" class="auth-banner auth-success hidden" role="status" aria-live="polite">
+                    <span class="banner-icon" aria-hidden="true">✅</span>
+                    <span id="auth-success-text" class="banner-text"></span>
+                </div>
+
+                <div class="auth-views-viewport">
+                    <!-- VIEW 1: LOGIN -->
+                    <div id="auth-view-login" class="auth-view-screen active" role="tabpanel" aria-labelledby="auth-tab-login">
+                        <form id="form-login" class="auth-form" novalidate>
+                            <div class="auth-field-group">
+                                <label for="login-email" class="auth-field-label">Email Address <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="login-email" class="auth-input" type="email" placeholder="pilot@matrix.net" autocomplete="email" required>
+                            </div>
+                            <div class="auth-field-group">
+                                <label for="login-password" class="auth-field-label">Password <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="login-password" class="auth-input" type="password" placeholder="••••••••" autocomplete="current-password" required>
+                            </div>
+                            <div class="auth-secondary-row">
+                                <div></div>
+                                <button id="auth-goto-forgot-btn" class="auth-link" type="button">Forgot password?</button>
+                            </div>
+                            <button id="login-submit-btn" class="auth-submit-btn" type="submit">
+                                <span class="btn-text">SIGN IN</span>
+                            </button>
+                        </form>
+                        <div class="auth-switch-prompt">
+                            <span>Don't have an account?</span>
+                            <button id="auth-goto-register-btn" class="auth-link" type="button">Create one now</button>
+                        </div>
+                    </div>
+
+                    <!-- VIEW 2: REGISTRATION -->
+                    <div id="auth-view-register" class="auth-view-screen" role="tabpanel" aria-labelledby="auth-tab-register">
+                        <form id="form-register" class="auth-form" novalidate>
+                            <div class="auth-field-group">
+                                <label for="register-email" class="auth-field-label">Email Address <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="register-email" class="auth-input" type="email" placeholder="pilot@matrix.net" autocomplete="email" required>
+                            </div>
+                            <div class="auth-field-group">
+                                <label for="register-password" class="auth-field-label">Password <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="register-password" class="auth-input" type="password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required>
+                                <span class="auth-field-hint">Minimum 8 characters</span>
+                            </div>
+                            <div class="auth-field-group">
+                                <label for="register-username" class="auth-field-label">Username <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="register-username" class="auth-input" type="text" placeholder="cyber_pilot" autocomplete="username" pattern="^[a-zA-Z0-9_]{3,20}$" maxlength="20" required>
+                                <span class="auth-field-hint">3–20 characters, letters, numbers, and underscores</span>
+                            </div>
+                            <div class="auth-field-group">
+                                <label for="register-display-name" class="auth-field-label">Display Name <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="register-display-name" class="auth-input" type="text" placeholder="Cyber Pilot" autocomplete="nickname" maxlength="50" required>
+                                <span class="auth-field-hint">Your public player name (1–50 characters)</span>
+                            </div>
+                            <div class="avatar-picker-section">
+                                <label class="avatar-picker-label" id="register-avatar-label">Choose Pilot Avatar</label>
+                                <div id="register-avatar-grid" class="avatar-picker-grid" role="radiogroup" aria-labelledby="register-avatar-label">
+                                    <!-- Dynamic preset avatar buttons populated by AuthUI -->
+                                </div>
+                                <input type="hidden" id="register-selected-avatar" value="preset:cyber_ninja">
+                            </div>
+                            <button id="register-submit-btn" class="auth-submit-btn" type="submit">
+                                <span class="btn-text">CREATE ACCOUNT</span>
+                            </button>
+                        </form>
+                        <div class="auth-switch-prompt">
+                            <span>Already have an account?</span>
+                            <button id="auth-goto-login-btn" class="auth-link" type="button">Sign in here</button>
+                        </div>
+                    </div>
+
+                    <!-- VIEW 3: FORGOT PASSWORD -->
+                    <div id="auth-view-forgot" class="auth-view-screen" role="region" aria-label="Forgot Password Screen">
+                        <form id="form-forgot" class="auth-form" novalidate>
+                            <div class="auth-field-group">
+                                <label for="forgot-email" class="auth-field-label">Email Address <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="forgot-email" class="auth-input" type="email" placeholder="pilot@matrix.net" autocomplete="email" required>
+                                <span class="auth-field-hint">We'll send you a secure password reset link</span>
+                            </div>
+                            <button id="forgot-submit-btn" class="auth-submit-btn" type="submit">
+                                <span class="btn-text">SEND RECOVERY LINK</span>
+                            </button>
+                        </form>
+                        <div class="auth-switch-prompt">
+                            <span>Remember your password?</span>
+                            <button id="auth-forgot-back-btn" class="auth-link" type="button">Back to Sign In</button>
+                        </div>
+                    </div>
+
+                    <!-- VIEW 4: RESET PASSWORD -->
+                    <div id="auth-view-reset" class="auth-view-screen" role="region" aria-label="Reset Password Screen">
+                        <form id="form-reset" class="auth-form" novalidate>
+                            <div class="auth-field-group">
+                                <label for="reset-password" class="auth-field-label">New Password <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="reset-password" class="auth-input" type="password" placeholder="At least 8 characters" autocomplete="new-password" minlength="8" required>
+                                <span class="auth-field-hint">Minimum 8 characters</span>
+                            </div>
+                            <div class="auth-field-group">
+                                <label for="reset-confirm-password" class="auth-field-label">Confirm New Password <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="reset-confirm-password" class="auth-input" type="password" placeholder="Repeat new password" autocomplete="new-password" minlength="8" required>
+                            </div>
+                            <button id="reset-submit-btn" class="auth-submit-btn" type="submit">
+                                <span class="btn-text">UPDATE PASSWORD</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REUSABLE MODAL: PROFILE & ACCOUNT MANAGEMENT -->
+        <div id="modal-profile" class="game-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+            <div class="modal-card modal-profile">
+                <div class="profile-modal-header auth-modal-header">
+                    <div class="auth-modal-header-content">
+                        <h3 id="profile-modal-title" class="auth-modal-title">PILOT PROFILE</h3>
+                        <p id="profile-modal-subtitle" class="auth-modal-subtitle">Manage your player identity &amp; account settings</p>
+                    </div>
+                    <button id="profile-modal-close-btn" class="auth-modal-close-btn" type="button" aria-label="Close Profile Dialog">&times;</button>
+                </div>
+
+                <div id="profile-tabs-nav" class="auth-tabs-nav" role="tablist" aria-label="Profile Management Tabs">
+                    <button id="profile-tab-btn" class="auth-tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="profile-view-details">MY PROFILE</button>
+                    <button id="settings-tab-btn" class="auth-tab-btn" type="button" role="tab" aria-selected="false" aria-controls="profile-view-settings">ACCOUNT SETTINGS</button>
+                </div>
+
+                <div id="profile-error-banner" class="auth-banner auth-error hidden" role="alert" aria-live="assertive">
+                    <span class="banner-icon" aria-hidden="true">⚠️</span>
+                    <span id="profile-error-text" class="banner-text"></span>
+                </div>
+
+                <div id="profile-success-banner" class="auth-banner auth-success hidden" role="status" aria-live="polite">
+                    <span class="banner-icon" aria-hidden="true">✅</span>
+                    <span id="profile-success-text" class="banner-text"></span>
+                </div>
+
+                <div class="profile-views-viewport auth-views-viewport">
+                    <!-- TAB 1: MY PROFILE -->
+                    <div id="profile-view-details" class="profile-view-screen auth-view-screen active" role="tabpanel" aria-labelledby="profile-tab-btn">
+                        <form id="form-profile" class="auth-form" novalidate>
+                            <!-- Avatar Preview Area & Username Display -->
+                            <div class="profile-identity-preview">
+                                <div class="profile-avatar-preview-wrapper">
+                                    <img id="profile-avatar-preview" class="profile-avatar-preview-img" src="" alt="Avatar Preview">
+                                    <span class="profile-avatar-badge" aria-hidden="true">PILOT</span>
+                                </div>
+                                <div class="profile-identity-info">
+                                    <span id="profile-display-username" class="profile-preview-username">@player</span>
+                                    <span class="profile-preview-rank">Arcade Pilot</span>
+                                </div>
+                            </div>
+
+                            <!-- Display Name Input -->
+                            <div class="auth-field-group">
+                                <label for="profile-display-name" class="auth-field-label">Display Name <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="profile-display-name" class="auth-input" type="text" placeholder="Cyber Pilot" autocomplete="nickname" maxlength="50" required>
+                                <span class="auth-field-hint">Your public player name (1–50 characters)</span>
+                            </div>
+
+                            <!-- Username Input -->
+                            <div class="auth-field-group">
+                                <label for="profile-username" class="auth-field-label">Username <span class="required-mark" aria-hidden="true">*</span></label>
+                                <input id="profile-username" class="auth-input" type="text" placeholder="cyber_pilot" autocomplete="username" pattern="^[a-zA-Z0-9_]{3,20}$" maxlength="20" required>
+                                <span class="auth-field-hint">3–20 characters, lowercase letters, numbers, and underscores</span>
+                            </div>
+
+                            <!-- Bio Textarea (maximum 160 characters) -->
+                            <div class="auth-field-group">
+                                <div class="auth-label-row">
+                                    <label for="profile-bio" class="auth-field-label">Pilot Bio</label>
+                                    <span id="profile-bio-counter" class="field-char-counter">0/160</span>
+                                </div>
+                                <textarea id="profile-bio" class="auth-input profile-bio-textarea" placeholder="Tell other pilots about your playstyle, favorite games, or arcade motto..." maxlength="160" rows="3"></textarea>
+                                <span class="auth-field-hint">Brief player bio visible on your public card (max 160 characters)</span>
+                            </div>
+
+                            <!-- Avatar Selection Grid Container -->
+                            <div class="avatar-picker-section">
+                                <label class="avatar-picker-label" id="profile-avatar-picker-label">Choose Pilot Avatar</label>
+                                <div id="profile-avatar-grid" class="avatar-picker-grid" role="radiogroup" aria-labelledby="profile-avatar-picker-label">
+                                    <!-- Dynamic preset avatar buttons populated by AuthUI -->
+                                </div>
+                                <input type="hidden" id="profile-selected-avatar" value="preset:cyber_ninja">
+                            </div>
+
+                            <!-- Save Changes Button -->
+                            <button id="profile-save-btn" class="auth-submit-btn" type="submit">
+                                <span class="btn-text">SAVE CHANGES</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- TAB 2: ACCOUNT SETTINGS -->
+                    <div id="profile-view-settings" class="profile-view-screen auth-view-screen hidden" role="tabpanel" aria-labelledby="settings-tab-btn">
+                        <div class="account-settings-container">
+                            <!-- Registered Email (read-only) -->
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <span class="settings-icon" aria-hidden="true">✉️</span>
+                                    <div class="settings-meta">
+                                        <span class="settings-title">Registered Email</span>
+                                        <span class="settings-desc">Your primary Supabase authentication address</span>
+                                    </div>
+                                </div>
+                                <div class="settings-readonly-field">
+                                    <span id="settings-email-display" class="settings-readonly-value">pilot@matrix.net</span>
+                                    <span class="settings-badge-locked" title="Email address is secured by Supabase Auth">🔒 Verified</span>
+                                </div>
+                            </div>
+
+                            <!-- Account Creation Date (read-only) -->
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <span class="settings-icon" aria-hidden="true">📅</span>
+                                    <div class="settings-meta">
+                                        <span class="settings-title">Pilot Since</span>
+                                        <span class="settings-desc">The date your player profile was created</span>
+                                    </div>
+                                </div>
+                                <div class="settings-readonly-field">
+                                    <span id="settings-created-date" class="settings-readonly-value">Loading date...</span>
+                                    <span class="settings-badge-status">Active Account</span>
+                                </div>
+                            </div>
+
+                            <!-- Sound Preference Display -->
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <span class="settings-icon" aria-hidden="true">🔊</span>
+                                    <div class="settings-meta">
+                                        <span class="settings-title">Sound Effects</span>
+                                        <span class="settings-desc">Arcade audio synthesizer and UI sound effects</span>
+                                    </div>
+                                </div>
+                                <div class="settings-action-row">
+                                    <span id="settings-sound-status" class="settings-status-indicator">Sound: ON</span>
+                                    <button id="settings-sound-toggle-btn" class="btn btn-secondary btn-sm" type="button">Toggle Sound</button>
+                                </div>
+                            </div>
+
+                            <!-- Theme Preference Display -->
+                            <div class="settings-card">
+                                <div class="settings-card-header">
+                                    <span class="settings-icon" aria-hidden="true">🎨</span>
+                                    <div class="settings-meta">
+                                        <span class="settings-title">Portal Theme</span>
+                                        <span class="settings-desc">Visual styling and neon color scheme</span>
+                                    </div>
+                                </div>
+                                <div class="settings-action-row">
+                                    <span class="settings-status-indicator">Cyberpunk Dark (Active)</span>
+                                    <span class="settings-badge-theme">Default Theme</span>
+                                </div>
+                            </div>
+
+                            <!-- Security / Change Password Button -->
+                            <div class="settings-card settings-card-security">
+                                <div class="settings-card-header">
+                                    <span class="settings-icon" aria-hidden="true">🔑</span>
+                                    <div class="settings-meta">
+                                        <span class="settings-title">Security Key &amp; Password</span>
+                                        <span class="settings-desc">Update your account login password</span>
+                                    </div>
+                                </div>
+                                <div class="settings-action-row">
+                                    <button id="settings-change-password-btn" class="btn btn-primary btn-sm" type="button">
+                                        <span>Change Password</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- TOAST NOTIFICATION -->
         <div id="toast-notification" class="toast-pill hidden" role="status" aria-live="polite"></div>
 
     </div>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/eventbus.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/avatars-data.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/auth-ui.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/tictactoe.js"></script>
